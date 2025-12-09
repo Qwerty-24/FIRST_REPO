@@ -20,6 +20,7 @@ for i in range (0, k):
         if (i != 0):
             res += inner * (2*i-1) + stitch
         # res += " "*(k-i-1)
+    res = res.rstrip()
     a.append(res)
 
 for i in range (0, k):
@@ -30,6 +31,7 @@ for i in range (0, k):
             res += inner * (2*i-1) + border
         # res += " "*(k-i-1)
         # res += "\n"
+    res = res.rstrip()
     b.append(res)
 
 b.reverse()
@@ -37,10 +39,10 @@ b.reverse()
 
 for j in range(0, len(a)):
     if (j != len(a)-1):
-        print(a[j], sep = "", end = "\n")
+        print(a[j])
     else:
         print(a[j], sep = "", end = "")
 for j in range(0, len(b)):
-    print(b[j], sep = "", end = "\n")
+    print(b[j])
 
 

@@ -1,0 +1,1 @@
+{"name":"Local: diamond","url":"d:\\Python\\FIRST_REPO\\diamond.py","tests":[{"id":1765264192988,"input":"3 * . 6","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Python\\FIRST_REPO\\diamond.py","group":"local","local":true}

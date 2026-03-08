@@ -1,14 +1,29 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
 class SortingAlgorithms {
 private:
     // Utility function for merge sort
     static void merge(std::vector<int>& arr, int left, int mid, int right) {
-        // TODO: Implement merge function
-        // 1. Create temporary arrays L[] and R[]
-        // 2. Copy data to temporary arrays
-        // 3. Merge the temporary arrays back into arr[left..right]
+        int n1 = mid - left + 1; int n2 = right - mid;
+        int l[n1], r[n2];
+        for (int i = left; i <= mid; ++i){
+            l[i-left] = arr[i];
+        }
+        for (int j = mid+1; j <= right; ++j){
+            r[j-mid-1] = arr[j];
+        }
+        int i = 0, j = 0, cnt = left;
+        while(i < n1 && j < n2){
+            if (l[i] < r[j]) arr[cnt++] = l[i++];
+            else arr[cnt++] = r[j++];
+        }
+        while(i < n1){
+            arr[cnt++] = l[i++];
+        }
+        while(j < n2){
+            arr[cnt++] = r[j++];
+        }
     }
 
     // Utility function for quick sort
@@ -22,11 +37,12 @@ private:
 
     // Recursive function for merge sort
     static void mergeSortRecursive(std::vector<int>& arr, int left, int right) {
-        // TODO: Implement recursive merge sort
-        // 1. Check if left < right
-        // 2. Find middle point
-        // 3. Sort first and second halves
-        // 4. Merge the sorted halves
+        if (left < right){
+            int mid = (left+right)/2;
+            mergeSortRecursive(arr, left, mid);
+            mergeSortRecursive(arr,mid+1, right);
+            merge(arr, left, mid, right);
+        }
     }
 
     // Recursive function for quick sort
@@ -49,7 +65,7 @@ public:
                     // a = arr[i];
                     // arr[i] = arr[j];
                     // arr[j] = a;
-                    swap(arr[i], arr[j])
+                    swap(arr[i], arr[j]);
                     tmp = 0;
                 }
             }
@@ -62,10 +78,10 @@ public:
     // Selection Sort
     static void selectionSort(std::vector<int>& arr) {
         int n = arr.size();
-        for (int i = 0; i < n; ++i){
+        for (int i = 0; i < n-1; ++i){
             int min = 1e9+7;
             int min_idx = n-1;
-            for (int j = i+1; j < n-1; ++j){
+            for (int j = i+1; j < n; ++j){
                 if (arr[j] < min){
                     min = arr[j];
                     min_idx = j;
@@ -78,9 +94,15 @@ public:
     }
     // Insertion Sort
     static void insertionSort(std::vector<int>& arr) {
-        // TODO: Implement insertion sort
-        // 1. Iterate through array
-        // 2. For each element, insert it into its correct position in sorted part
+        int n = arr.size();
+        for (int i = 1; i < n; ++i){
+            int idx = i-1; int x = arr[i];
+            while (idx >= 0 && x < arr[idx]){
+                arr[idx+1] = arr[idx];
+                --idx;
+            }
+            arr[idx+1] = x;
+        }
     }
 
     // Merge Sort (public interface)

@@ -4,18 +4,13 @@ using namespace std;
 int main(){
     vector<int> arr = {64, 34, 25, 12, 22, 11, 90};
     int n = arr.size();
-    for (int i = 0; i < n; ++i){
-        int min = 1e9+7;
-        int min_idx = n-1;
-        for (int j = i+1; j < n-1; ++j){
-            if (arr[j] < min){
-                min = arr[j];
-                min_idx = j;
-            }
+    for (int i = 1; i < n; ++i){
+        int idx = i-1; int x = arr[i];
+        while (idx >= 0 && x < arr[idx]){
+            arr[idx+1] = arr[idx];
+            --idx;
         }
-        if (arr[min_idx] < arr[i]){
-            swap(arr[min_idx], arr[i]);
-        }
+        arr[idx+1] = x;
     }
     for (int x : arr){
         cout << x << " ";

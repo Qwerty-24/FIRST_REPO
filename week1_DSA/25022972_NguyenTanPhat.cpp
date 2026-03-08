@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
 class SortingAlgorithms {
@@ -27,12 +28,18 @@ private:
     }
 
     // Utility function for quick sort
-    static int partition(std::vector<int>& arr, int low, int high) {
-        // TODO: Implement partition function
-        // 1. Select pivot (typically last element)
-        // 2. Place pivot at its correct position
-        // 3. Place smaller elements to left of pivot and greater to right
-        return 0; // Placeholder return
+    static int partition(std::vector<int>& arr, int left, int right) {
+        int pivot = arr[right];
+        int i = left-1;
+        for (int j = left; j < right; ++j){
+            if(arr[j] < pivot){
+                ++i;
+                swap(arr[i], arr[j]);
+            }
+        }
+        ++i;
+        swap(arr[i], arr[right]);
+        return i; // Placeholder return
     }
 
     // Recursive function for merge sort
@@ -46,11 +53,13 @@ private:
     }
 
     // Recursive function for quick sort
-    static void quickSortRecursive(std::vector<int>& arr, int low, int high) {
-        // TODO: Implement recursive quick sort
-        // 1. Check if low < high
-        // 2. Get partition index
-        // 3. Sort elements before and after partition
+    static void quickSortRecursive(std::vector<int>& arr, int left, int right) {
+        if (left < right){
+            int m = (left + right)/2;
+            int p = partition(arr, left, right);
+            quickSortRecursive(arr, left, p-1);
+            quickSortRecursive(arr, p+1, right);
+        }
     }
 
 public:

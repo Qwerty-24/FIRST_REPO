@@ -1,1 +1,1 @@
-{"name":"Local: hello_world","url":"d:\\Coding_VSCode\\FIRST_REPO\\hello_world.cpp","tests":[{"id":1772969979245,"input":"","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Coding_VSCode\\FIRST_REPO\\hello_world.cpp","group":"local","local":true}
+{"name":"Local: hello_world","url":"d:\\Coding_VSCode\\FIRST_REPO\\hello_world.cpp","tests":[{"id":1772969979245,"input":"0 1","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Coding_VSCode\\FIRST_REPO\\hello_world.cpp","group":"local","local":true}

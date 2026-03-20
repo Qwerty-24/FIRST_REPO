@@ -1,0 +1,23 @@
+int main ()
+{
+  int D.2879;
+
+  {
+    int a;
+    int b;
+    int c;
+    int x;
+
+    a = 5;
+    b = 10;
+    c = a + b;
+    _1 = b * c;
+    x = a + _1;
+    D.2879 = 0;
+    return D.2879;
+  }
+  D.2879 = 0;
+  return D.2879;
+}
+
+

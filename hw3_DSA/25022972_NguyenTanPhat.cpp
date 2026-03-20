@@ -15,8 +15,8 @@ private:
 public:
     // Constructor: Initialize array with given size, set top to -1
     ArrayStack(int size = 100) {
-        array = new int[100];
-        capacity = 100;
+        capacity = size;
+        array = new int[capacity];
         top = -1;
     }
 
@@ -27,42 +27,47 @@ public:
 
     // Returns true if stack has no elements, false otherwise
     bool isEmpty() {
-        if (top = -1) return true;
-        return false; // Placeholder, replace with correct implementation
+        return top == -1;
     }
 
     // Returns true if stack is full, false otherwise
     bool isFull() {
-        if (top = 99) return true;
-        return false; // Placeholder, replace with correct implementation
+        return top == capacity -1;
     }
 
     // Add value to the top of the stack
     // Should throw overflow_error if stack is full
     void push(int value) {
-        if (top == 99) return // overflow_error
-        ++top;
-        array[top] 
+        if (isFull()){
+            throw std::overflow_error("Stack is full");
+        }
+        top++;
+        array[top] = value;
     }
 
     // Remove and return the top element
     // Should throw underflow_error if stack is empty
     int pop() {
-        // TODO: Implement pop function
-        return 0; // Placeholder, replace with correct implementation
+        if (isEmpty()){
+            throw std::underflow_error("Stack is empty");
+        }
+        int value = array[top];
+        top--;
+        return value;
     }
 
     // Return the top element without removing it
     // Should throw underflow_error if stack is empty
     int peek() {
-        // TODO: Implement peek function
-        return 0; // Placeholder, replace with correct implementation
+        if (isEmpty()){
+            throw std::underflow_error("Stack is empty");
+        }
+        return array[top];
     }
 
     // Return the number of elements in the stack
     int size() {
-        // TODO: Implement size function
-        return 0; // Placeholder, replace with correct implementation
+        return top+1;
     }
 };
 
@@ -80,23 +85,27 @@ public:
     // Set front to 0, rear to -1, and count to 0
     ArrayQueue(int size = 100) {
         // TODO: Implement constructor
+        capacity = size;
+        array = new int[capacity];
+        front = 0;
+        rear = -1;
+        count = 0;
     }
 
     // Destructor: Free dynamically allocated memory
     ~ArrayQueue() {
         // TODO: Implement destructor
+        delete []array;
     }
 
     // Returns true if queue has no elements, false otherwise
     bool isEmpty() {
-        // TODO: Implement isEmpty function
-        return false; // Placeholder, replace with correct implementation
+        return count == 0;
     }
 
     // Returns true if queue is full, false otherwise
     bool isFull() {
-        // TODO: Implement isFull function
-        return false; // Placeholder, replace with correct implementation
+        return count == capacity;
     }
 
     // Add value to the end of the queue
@@ -104,6 +113,12 @@ public:
     // Remember to use circular array concept with modulo (%)
     void enqueue(int value) {
         // TODO: Implement enqueue function
+        if (isFull()){
+            throw std::overflow_error("Queue is full");
+        }
+        rear = (rear + 1) % capacity;
+        array[rear] = value;
+        count++;
     }
 
     // Remove and return the front element
@@ -111,20 +126,27 @@ public:
     // Remember to use circular array concept with modulo (%)
     int dequeue() {
         // TODO: Implement dequeue function
-        return 0; // Placeholder, replace with correct implementation
+        if (isEmpty()){
+            throw std::underflow_error("Queue is empty");
+        }
+        int value = array[front];
+        front = (front + 1) % capacity;
+        count--;
+        return value;
     }
 
     // Return the front element without removing it
     // Should throw underflow_error if queue is empty
     int peek() {
-        // TODO: Implement peek function
-        return 0; // Placeholder, replace with correct implementation
+        if (isEmpty()){
+            throw std::underflow_error("Queue is empty");
+        }
+        return array[front];
     }
 
     // Return the number of elements in the queue
     int size() {
-        // TODO: Implement size function
-        return 0; // Placeholder, replace with correct implementation
+        return count;
     }
 };
 
@@ -147,44 +169,59 @@ private:
 public:
     // Constructor: Initialize top to nullptr and count to 0
     LinkedListStack() {
-        // TODO: Implement constructor
+        top = nullptr;
+        count = 0;
     }
 
     // Destructor: Free all dynamically allocated nodes
     ~LinkedListStack() {
-        // TODO: Implement destructor
+        while (top != nullptr){
+            Node* tmp = top;
+            top = top->next;
+            delete tmp;
+        }
     }
 
     // Returns true if stack has no elements, false otherwise
     bool isEmpty() {
-        // TODO: Implement isEmpty function
-        return false; // Placeholder, replace with correct implementation
+        return top == nullptr;
     }
 
     // Add value to the top of the stack
     // Create a new node and make it the new top
     void push(int value) {
-        // TODO: Implement push function
+        Node* newNode = new Node(value);
+        newNode->next = top;
+        top = newNode;
+        count++;
     }
 
     // Remove and return the top element
     // Should throw underflow_error if stack is empty
     int pop() {
-        // TODO: Implement pop function
-        return 0; // Placeholder, replace with correct implementation
+        if (isEmpty()){
+            throw std::underflow_error("Stack is empty");
+        }
+        Node* tmp = top;
+        int value = tmp->data;
+        top = top->next;
+        delete tmp;
+        count--;
+        return value;
     }
 
     // Return the top element without removing it
     // Should throw underflow_error if stack is empty
     int peek() {
-        // TODO: Implement peek function
-        return 0; // Placeholder, replace with correct implementation
+        if (isEmpty()){
+            throw std::underflow_error("Stack is empty");
+        }
+        return top->data;
     }
 
     // Return the number of elements in the stack
     int size() {
-        // TODO: Implement size function
-        return 0; // Placeholder, replace with correct implementation
+        return count;
     }
 };
 
@@ -198,45 +235,72 @@ private:
 public:
     // Constructor: Initialize front and rear to nullptr and count to 0
     LinkedListQueue() {
-        // TODO: Implement constructor
+        front = nullptr;
+        rear = nullptr;
+        count = 0;
     }
 
     // Destructor: Free all dynamically allocated nodes
     ~LinkedListQueue() {
-        // TODO: Implement destructor
+        while (front != nullptr){
+            Node* tmp = front;
+            front = front->next;
+            delete tmp;
+            // count--;
+        }
+        rear = nullptr;
     }
 
     // Returns true if queue has no elements, false otherwise
     bool isEmpty() {
-        // TODO: Implement isEmpty function
-        return false; // Placeholder, replace with correct implementation
+        return front == nullptr;
     }
 
     // Add value to the end of the queue
     // Special case: if queue is empty, front and rear both point to new node
     void enqueue(int value) {
-        // TODO: Implement enqueue function
+        Node* newNode = new Node(value);
+        if (isEmpty()){
+            front = newNode;
+            rear = newNode;
+        }
+        else{
+            rear->next = newNode;
+            rear = newNode;
+        }
+        count++;
     }
 
     // Remove and return the front element
     // Should throw underflow_error if queue is empty
     // Special case: if queue becomes empty, set both front and rear to nullptr
     int dequeue() {
-        // TODO: Implement dequeue function
-        return 0; // Placeholder, replace with correct implementation
+        if(isEmpty()){
+            throw std::underflow_error("Queue is empty");
+        }
+        Node* tmp = front;
+        int val = front->data;
+        front = front->next;
+        delete tmp;
+        count--;
+        if (front == nullptr){
+            rear = nullptr;
+        }
+        return val;
     }
 
     // Return the front element without removing it
     // Should throw underflow_error if queue is empty
     int peek() {
-        // TODO: Implement peek function
-        return 0; // Placeholder, replace with correct implementation
+        if(isEmpty()){
+            throw std::underflow_error("Queue is empty");
+        }
+        return front->data;  
     }
 
     // Return the number of elements in the queue
     int size() {
-        // TODO: Implement size function
-        return 0; // Placeholder, replace with correct implementation
+        return count;
     }
 };
 

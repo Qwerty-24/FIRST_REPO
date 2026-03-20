@@ -24,14 +24,12 @@ private:
 
 public:
     // Constructor: Initialize an empty list
-    SinglyLinkedList() : head(nullptr), tail(nullptr), count(0) {
-        // TODO: Initialize head, tail, and count
-    }
+    SinglyLinkedList() : head(nullptr), tail(nullptr), count(0) {}
     
     // Destructor: Free all nodes
     ~SinglyLinkedList() {
         // TODO: Delete all nodes to prevent memory leaks
-        while (!isEmpty()) {
+        while (!isEmpty()){
             popFront();
         }
     }
@@ -53,29 +51,47 @@ public:
         // TODO: Create a new node and add it to the front of the list
         // Update head, and tail if necessary
         Node* newNode = new Node(value);
-        if (isEmpty()) {
+        if (isEmpty()){
             head = tail = newNode;
         } else {
             newNode->next = head;
             head = newNode;
         }
-        count ++;
+        count++;
     }
     
     // Add element to the back of the list
-    void pushBack(const T& value) {
-        // TODO: Create a new node and add it to the back of the list
-        // Update head and tail as needed
+    void pushBack(const T& value){
+        Node* newNode = new Node(value);
+        if (isEmpty()){
+            head = tail = newNode;
+        }
+        else{
+            // newNode->next = nullptr;
+            tail->next = newNode;
+            tail = newNode;
+        }
+        count++;
     }
     
     // Remove and return the first element
     // Should throw underflow_error if list is empty
-    T popFront() {
+    T popFront(){
         // TODO: Remove the front node and return its value
         // Update head, and tail if necessary
         // Don't forget to handle the empty list case
-        T dummy{}; // This is just a placeholder
-        return dummy;
+        if (isEmpty()){
+            throw std::underflow_error("List is empty");
+        }
+        Node* tmp = head;
+        T val = tmp->data;
+        head = tmp->next;
+        delete tmp;
+        if (head == nullptr){
+            tail = nullptr;
+        }
+        count--;
+        return val;
     }
     
     // Remove and return the last element
@@ -85,26 +101,44 @@ public:
         // Update head and tail as needed
         // Don't forget to handle the empty list case
         // Note: This is O(n) for singly linked list since you need to find the node before tail
-        T dummy{}; // This is just a placeholder
-        return dummy;
+        if (isEmpty()){
+            throw std::underflow_error("List is empty");
+        }
+        if (head == tail){
+            T val = head->data;
+            delete head;
+            head = tail = nullptr;
+            count--;
+            return val;
+        }
+        Node* current = head;
+        while (current->next != tail){
+            current = current->next;
+        }
+        T val = tail->data;
+        delete tail;
+        tail = current;
+        tail->next = nullptr;
+        count--;
+        return val;
     }
     
     // Return the first element without removing it
     // Should throw underflow_error if list is empty
     T& front() {
-        // TODO: Return the value of the front node
-        // Don't forget to handle the empty list case
-        static T dummy{}; // This is just a placeholder
-        return dummy;
+        if (isEmpty()){
+            throw std::underflow_error("List is empty");
+        }
+        return head->data;
     }
     
     // Return the last element without removing it
     // Should throw underflow_error if list is empty
     T& back() {
-        // TODO: Return the value of the back node
-        // Don't forget to handle the empty list case
-        static T dummy{}; // This is just a placeholder
-        return dummy;
+        if (isEmpty()){
+            throw std::underflow_error("List is empty");
+        }
+        return tail->data;
     }
     
     // Insert value at the specified position (0-based index)
@@ -112,6 +146,25 @@ public:
     void insert(int position, const T& value) {
         // TODO: Insert a new node with the given value at the specified position
         // Don't forget to handle special cases (position 0, end of list, invalid position)
+        if (position < 0 || position > count){
+            throw std::out_of_range("Invalid position");
+        }
+        if (position == 0){
+            pushFront(value);
+            return;
+        }
+        if (position == count){
+            pushBack(value);
+            return;
+        }
+        Node* newNode = new Node(value);
+        Node* current = head;
+        for (int i = 0; i < position - 1; i++){
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+        count++;
     }
     
     // Remove element at the specified position (0-based index)
@@ -119,27 +172,56 @@ public:
     void remove(int position) {
         // TODO: Remove the node at the specified position
         // Don't forget to handle special cases (position 0, last element, invalid position)
+        if (position < 0 || position >= count){
+            throw std::out_of_range("Invalid position");
+        }
+        if (position == 0){
+            popFront();
+            return;
+        }
+        if (position == count - 1){
+            popBack();
+            return;
+        }
+        Node* current = head;
+        for (int i = 0; i < position - 1; i++){
+            current = current->next;
+        }
+        Node* temp = current->next;
+        current->next = temp->next;
+        delete temp;
+        count--;
     }
     
     // Find the first occurrence of value and return its position (0-based index)
     // Return -1 if value is not found
     int find(const T& value) const {
-        // TODO: Find the first occurrence of value and return its position
-        return -1; // Placeholder, replace with correct implementation
+        Node* current = head;
+        int position = 0;
+        while (current != nullptr){
+            if (current->data == value){
+                return position;
+            }
+            current = current->next;
+            position++;
+        }
+        return -1;
     }
     
     // Print the list elements
     void display() const {
         // TODO: Print all elements in the list
         // Format: [element1, element2, ..., elementN]
-        Node * current = head;
+        Node* current = head;
         std::cout << "[";
         while (current != nullptr) {
-            if (current->next)
-                std::cout << current->data << " ";
+            std::cout << current->data;
+            if (current->next != nullptr) {
+                std::cout << ", ";
+            }
             current = current->next;
         }
-        std::cout << "]";
+        std::cout << "]" << std::endl;
     }
 };
 
@@ -163,111 +245,202 @@ private:
 
 public:
     // Constructor: Initialize an empty list
-    DoublyLinkedList() {
-        // TODO: Initialize head, tail, and count
-    }
+    DoublyLinkedList() : head(nullptr), tail(nullptr), count(0) {}
     
     // Destructor: Free all nodes
     ~DoublyLinkedList() {
-        // TODO: Delete all nodes to prevent memory leaks
+        while (!isEmpty()){
+            popFront();
+        }
     }
     
     // Returns true if the list is empty, false otherwise
     bool isEmpty() const {
-        // TODO: Implement isEmpty function
-        return true; // Placeholder, replace with correct implementation
+        return head == nullptr;
     }
     
     // Returns the number of elements in the list
     int size() const {
-        // TODO: Implement size function
-        return 0; // Placeholder, replace with correct implementation
+        return count;
     }
     
     // Add element to the front of the list
     void pushFront(const T& value) {
-        // TODO: Create a new node and add it to the front of the list
-        // Update head, tail, and prev/next pointers as needed
+        Node* newNode = new Node(value);
+        if (isEmpty()){
+            head = tail = newNode;
+        } 
+        else{
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        }
+        count++;
     }
     
     // Add element to the back of the list
     void pushBack(const T& value) {
-        // TODO: Create a new node and add it to the back of the list
-        // Update head, tail, and prev/next pointers as needed
+        Node* newNode = new Node(value);
+        if (isEmpty()){
+            head = tail = newNode;
+        } 
+        else{
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+        count++;
     }
     
     // Remove and return the first element
     // Should throw underflow_error if list is empty
     T popFront() {
-        // TODO: Remove the front node and return its value
-        // Update head, tail, and prev/next pointers as needed
-        // Don't forget to handle the empty list case
-        T dummy{}; // This is just a placeholder
-        return dummy;
+        if (isEmpty()){
+            throw std::underflow_error("List is empty");
+        }
+        Node* tmp = head;
+        T val = tmp->data;
+        if (head == tail){
+            head = tail = nullptr;
+        }
+        else{
+            head = head->next;
+            head->prev = nullptr;
+        }
+        delete tmp;
+        count--;
+        return val;
     }
     
     // Remove and return the last element
     // Should throw underflow_error if list is empty
     T popBack() {
-        // TODO: Remove the back node and return its value
-        // Update head, tail, and prev/next pointers as needed
-        // Don't forget to handle the empty list case
-        // Note: This is O(1) for doubly linked list
-        T dummy{}; // This is just a placeholder
-        return dummy;
+        if (isEmpty()) {
+            throw std::underflow_error("List is empty");
+        }
+        Node* tmp = tail;
+        T val = tmp->data;
+        if (head == tail) {
+            head = tail = nullptr;
+        }
+        else{
+            tail = tail->prev;
+            tail->next = nullptr;
+        }
+        delete tmp;
+        count--;
+        return val;
     }
     
     // Return the first element without removing it
     // Should throw underflow_error if list is empty
     T& front() {
-        // TODO: Return the value of the front node
-        // Don't forget to handle the empty list case
-        static T dummy{}; // This is just a placeholder
-        return dummy;
+        if (isEmpty()) {
+            throw std::underflow_error("List is empty");
+        }
+        return head->data;
     }
     
     // Return the last element without removing it
     // Should throw underflow_error if list is empty
     T& back() {
-        // TODO: Return the value of the back node
-        // Don't forget to handle the empty list case
-        static T dummy{}; // This is just a placeholder
-        return dummy;
+        if (isEmpty()) {
+            throw std::underflow_error("List is empty");
+        }
+        return tail->data;
     }
     
     // Insert value at the specified position (0-based index)
     // Should throw out_of_range if position is invalid
     void insert(int position, const T& value) {
-        // TODO: Insert a new node with the given value at the specified position
-        // Update prev/next pointers of affected nodes
-        // Don't forget to handle special cases (position 0, end of list, invalid position)
+        if (position < 0 || position > count) {
+            throw std::out_of_range("Invalid position");
+        }
+        if (position == 0){
+            pushFront(value);
+            return;
+        }
+        if (position == count){
+            pushBack(value);
+            return;
+        }
+        Node* newNode = new Node(value);
+        Node* current = head;
+        for (int i = 0; i < position; i++){
+            current = current->next;
+        }
+        newNode->next = current;
+        newNode->prev = current->prev;
+        current->prev->next = newNode;
+        current->prev = newNode;
+        count++;
     }
     
     // Remove element at the specified position (0-based index)
     // Should throw out_of_range if position is invalid
     void remove(int position) {
-        // TODO: Remove the node at the specified position
-        // Update prev/next pointers of affected nodes
-        // Don't forget to handle special cases (position 0, last element, invalid position)
+        if (position < 0 || position >= count){
+            throw std::out_of_range("Invalid position");
+        }
+        if (position == 0){
+            popFront();
+            return;
+        }
+        if (position == count - 1){
+            popBack();
+            return;
+        }
+        Node* current = head;
+        for (int i = 0; i < position; i++){
+            current = current->next;
+        }
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+        delete current;
+        count--;
     }
     
     // Find the first occurrence of value and return its position (0-based index)
     // Return -1 if value is not found
     int find(const T& value) const {
-        // TODO: Find the first occurrence of value and return its position
-        return -1; // Placeholder, replace with correct implementation
+        Node* current = head;
+        int position = 0;
+        while (current != nullptr) {
+            if (current->data == value) {
+                return position;
+            }
+            current = current->next;
+            position++;
+        }
+        return -1;
     }
     
     // Print the list elements in forward order
     void displayForward() const {
-        // TODO: Print all elements in the list from head to tail
-        // Format: [element1, element2, ..., elementN]
+        Node* current = head;
+        std::cout << "[";
+        while (current != nullptr) {
+            std::cout << current->data;
+            if (current->next != nullptr) {
+                std::cout << ", ";
+            }
+            current = current->next;
+        }
+        std::cout << "]" << std::endl;
     }
     
     // Print the list elements in reverse order
     void displayBackward() const {
-        // TODO: Print all elements in the list from tail to head
-        // Format: [elementN, ..., element2, element1]
+        Node* current = tail;
+        std::cout << "[";
+        while (current != nullptr) {
+            std::cout << current->data;
+            if (current->prev != nullptr) {
+                std::cout << ", ";
+            }
+            current = current->prev;
+        }
+        std::cout << "]" << std::endl;
     }
 };
 

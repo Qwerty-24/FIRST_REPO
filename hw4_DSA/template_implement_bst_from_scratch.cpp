@@ -24,12 +24,20 @@ private:
     // TODO: Implement private helper functions
     Node* insertRec(Node* node, int value) {
         // TODO: Implement recursive insert
-        Node* newNode = new Node(value);
+        if (node = nullptr){
+            Node* newNode = new Node(value);
+        }
+        else if(value < node->data)
     }
 
     Node* findMin(Node* node) {
         // TODO: Implement find minimum node
-        
+        if(node->left){
+            return findMin(node->left);
+        }
+        else{
+            return node;
+        }
     }
 
     Node* deleteRec(Node* node, int value) {

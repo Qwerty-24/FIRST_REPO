@@ -1,0 +1,1 @@
+{"name":"Local: countPairs","url":"d:\\Coding_VSCode\\FIRST_REPO\\GK_DSA\\countPairs.cpp","tests":[{"id":1775435440704,"input":"7 -2\n-6 2 5 -2 -7 -1 3","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Coding_VSCode\\FIRST_REPO\\GK_DSA\\countPairs.cpp","group":"local","local":true}

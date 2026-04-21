@@ -25,9 +25,15 @@ private:
     Node* insertRec(Node* node, int value) {
         // TODO: Implement recursive insert
         if (node = nullptr){
-            Node* newNode = new Node(value);
+            return new Node(value);
         }
-        else if(value < node->data)
+        else if(value < node->data){
+            return insertRec(node->left, value);
+        }
+        else if(value > node->data){
+            return insertRec(node->right, value);
+        }
+        return node;
     }
 
     Node* findMin(Node* node) {
